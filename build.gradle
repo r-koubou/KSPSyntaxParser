@@ -1,0 +1,14 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'maven'
+
+mainClassName = 'App'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+// https://mvnrepository.com/artifact/args4j/args4j
+compile group: 'args4j', name: 'args4j', version: '2.33'
+}
