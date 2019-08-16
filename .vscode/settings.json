@@ -4,5 +4,12 @@
     // `editor.detectIndentation` がオンの場合、この設定はファイル
     // コンテンツに基づいて上書きされます。
     "editor.tabSize": 4,
-    "python.linting.pylintEnabled": false
+    "python.linting.pylintEnabled": false,
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    }
 }

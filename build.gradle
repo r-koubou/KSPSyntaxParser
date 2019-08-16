@@ -1,14 +1,42 @@
-apply plugin: 'java'
-apply plugin: 'application'
-apply plugin: 'maven'
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
 
-mainClassName = 'App'
+    // Apply the application plugin to add support for building a CLI application
+    id 'application'
+
+    // JavaCC
+    id "com.intershop.gradle.javacc" version "3.0.3"
+}
 
 repositories {
-    mavenCentral()
+    // Use jcenter for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    jcenter()
 }
 
 dependencies {
-// https://mvnrepository.com/artifact/args4j/args4j
-compile group: 'args4j', name: 'args4j', version: '2.33'
+    // https://mvnrepository.com/artifact/args4j/args4j
+    compile group: 'args4j', name: 'args4j', version: '2.33'
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
+
+application {
+    // Define the main class for the application
+    mainClassName = 'net.rkoubou.kspcompiler.KSPCompiler'
+}
+
+javacc {
+    javaCCVersion = '6.1.0'
+    configs {
+        template {
+            inputFile = file('src/main/javacc/KSPParser.jjt')
+            outputDir = file('src/main/java/net/rkoubou/kspcompiler/javacc/generated')
+            jjtree {
+                // options are written at jjt file
+            }
+        }
+    }
 }

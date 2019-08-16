@@ -9,12 +9,13 @@ options
     VISITOR             = true;
     NODE_USES_PARSER    = true;
     NODE_DEFAULT_VOID   = true;
-    NODE_EXTENDS        = "net.rkoubou.kspparser.javacc.ASTKSPNode";
+    NODE_EXTENDS        = "net.rkoubou.kspcompiler.javacc.ASTKSPNode";
 }
+
 
 PARSER_BEGIN( KSPParser )
 
-package net.rkoubou.kspparser.javacc.generated;
+package net.rkoubou.kspcompiler.javacc.generated;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -23,13 +24,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 
-import net.rkoubou.kspparser.analyzer.AnalyzeErrorCounter;
-import net.rkoubou.kspparser.analyzer.AnalyzerConstants;
-import net.rkoubou.kspparser.analyzer.KSPLanguageLimitations;
-import net.rkoubou.kspparser.analyzer.MessageManager;
-import net.rkoubou.kspparser.analyzer.SymbolDefinition;
-import net.rkoubou.kspparser.analyzer.SymbolDefinition.SymbolType;
-import net.rkoubou.kspparser.analyzer.Variable;
+import net.rkoubou.kspcompiler.analyzer.AnalyzeErrorCounter;
+import net.rkoubou.kspcompiler.analyzer.AnalyzerConstants;
+import net.rkoubou.kspcompiler.analyzer.KSPLanguageLimitations;
+import net.rkoubou.kspcompiler.analyzer.MessageManager;
+import net.rkoubou.kspcompiler.analyzer.SymbolDefinition;
+import net.rkoubou.kspcompiler.analyzer.SymbolDefinition.SymbolType;
+import net.rkoubou.kspcompiler.analyzer.Variable;
 
 public class KSPParser implements AnalyzerConstants
 {
