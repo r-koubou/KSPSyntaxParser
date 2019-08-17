@@ -17,7 +17,11 @@ hs_err_pid*
 
 # Ignore Gradle build output directory
 build
+
+# Ignore eclipse work directory, settings for vscode files
 bin
+.classpath
+.project
 
 # My rule
 deploy/
