@@ -2,11 +2,11 @@ plugins {
     // Apply the java plugin to add support for Java
     id 'java'
 
+    // Apply the kotlin plugin to add support for Kotlin
+    id "org.jetbrains.kotlin.jvm" version "1.3.41"
+
     // Apply the application plugin to add support for building a CLI application
     id 'application'
-
-    // Compatible .classpath, .project on vscode
-    id 'eclipse'
 
     // A Gradle plugin for collapsing all dependencies and project code into a single Jar file.
     id "com.github.johnrengelman.shadow" version "5.1.0"
@@ -15,6 +15,11 @@ plugins {
     id "com.intershop.gradle.javacc" version "3.0.3"
 }
 
+group 'kspcompiler'
+version '1.0.0'
+
+sourceCompatibility = 1.8
+
 repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
@@ -22,11 +27,20 @@ repositories {
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
     // https://mvnrepository.com/artifact/args4j/args4j
     compile group: 'args4j', name: 'args4j', version: '2.33'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 application {
