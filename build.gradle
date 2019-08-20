@@ -15,7 +15,6 @@ plugins {
     id "com.intershop.gradle.javacc" version "3.0.3"
 }
 
-group 'kspcompiler'
 version '1.0.0'
 
 sourceCompatibility = 1.8
@@ -53,7 +52,8 @@ javacc {
     configs {
         template {
             inputFile = file('src/main/javacc/KSPParser.jjt')
-            outputDir = file('src/main/java/net/rkoubou/kspcompiler/javacc/generated')
+            outputDir = file('src/main/generated/javacc')
+            packageName = 'net.rkoubou.kspcompiler.javacc.generated'
             jjtree {
                 // options are written at jjt file
             }
