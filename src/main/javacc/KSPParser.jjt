@@ -98,9 +98,9 @@ public class KSPParser implements AnalyzerConstants
         {
             dest.symbol.setName( token.image );
         }
-        dest.symbol.position.copy( token );
-        dest.symbol.type        = type;
-        dest.symbol.symbolType  = symbolType;
+        dest.symbol.getPosition().copy( token );
+        dest.symbol.setType( type );
+        dest.symbol.setSymbolType( symbolType );
     }
 
     /**
@@ -109,22 +109,22 @@ public class KSPParser implements AnalyzerConstants
     void applyIntLiteral( Token token, SimpleNode dest )
     {
         String v = token.image.toLowerCase();
+        dest.symbol.setType( TYPE_INT );
         if( v.startsWith( "9" ) && v.endsWith( "h" ) )
         {
             // KSP 16進数 → Java 16進数
             // 0x80000000以上の値の扱いが特殊なので一迂回。
             // http://qiita.com/oboenikui/items/cfd396b08f20798f0b3e
             BigInteger bi = new BigInteger( v.substring( 1, v.length() - 1 ), 16 );
-            dest.symbol.value = bi.intValue();
+            dest.symbol.setValue( bi.intValue() );
         }
         else
         {
             // 10進数
             // KSPは signed 32bit int
             BigInteger bi = new BigInteger( v );    // KONTAKTと同様に、何桁になっても最後は下位32bitに切り詰める
-            dest.symbol.value = bi.intValue();
+            dest.symbol.setValue( bi.intValue() );
         }
-        dest.symbol.type      = TYPE_INT;
         applyAllLiteral( token, dest );
     }
 
@@ -133,8 +133,8 @@ public class KSPParser implements AnalyzerConstants
      */
     void applyRealLiteral( Token token, SimpleNode dest )
     {
-        dest.symbol.value = Double.valueOf( token.image );
-        dest.symbol.type  = TYPE_REAL;
+        dest.symbol.setType( TYPE_REAL );
+        dest.symbol.setValue( Double.valueOf( token.image ) );
         applyAllLiteral( token, dest );
     }
 
@@ -143,8 +143,8 @@ public class KSPParser implements AnalyzerConstants
      */
     void applyStringLiteral( Token token, SimpleNode dest )
     {
-        dest.symbol.value = token.image;
-        dest.symbol.type  = TYPE_STRING;
+        dest.symbol.setType( TYPE_STRING );
+        dest.symbol.setValue( token.image );
         applyAllLiteral( token, dest );
     }
 
@@ -153,11 +153,11 @@ public class KSPParser implements AnalyzerConstants
      */
     void applyAllLiteral( Token token, SimpleNode dest )
     {
-        dest.jjtSetValue( dest.symbol.value );
         dest.symbol.setName( "" );
-        dest.symbol.accessFlag   = ACCESS_ATTR_CONST;
-        dest.symbol.position.copy( token );
-        dest.symbol.symbolType   = SymbolDefinition.SymbolType.Literal;
+        dest.symbol.setSymbolType( SymbolDefinition.SymbolType.Literal );
+        dest.symbol.setAccessFlag( ACCESS_ATTR_CONST );
+        dest.jjtSetValue( dest.symbol.getValue() );
+        dest.symbol.getPosition().copy( token );
     }
 
     /**
@@ -165,8 +165,8 @@ public class KSPParser implements AnalyzerConstants
      */
     void errorSkipTo( ParseException e )
     {
-        MessageManager.println( e );
-        AnalyzeErrorCounter.e();
+        MessageManager.INSTANCE.println( e );
+        AnalyzeErrorCounter.INSTANCE.e();
         //e.printStackTrace();
         Token t = null;
         do
@@ -425,9 +425,9 @@ void VariableDeclaration() #VariableDeclaration:
     (
         symbol = <DECLARE> (LOOKAHEAD(2) <MULTI_LINE_DELIMITER>)*
         (
-              <CONST>                { jjtThis.symbol.accessFlag = ACCESS_ATTR_CONST; }
-            | <POLYPHONIC>           { jjtThis.symbol.accessFlag = ACCESS_ATTR_POLY; }
-            | uiType = <IDENTIFIER>  { jjtThis.symbol.accessFlag = ACCESS_ATTR_UI; } // ui_****
+              <CONST>                { jjtThis.symbol.setAccessFlag( ACCESS_ATTR_CONST ); }
+            | <POLYPHONIC>           { jjtThis.symbol.setAccessFlag( ACCESS_ATTR_POLY ); }
+            | uiType = <IDENTIFIER>  { jjtThis.symbol.setAccessFlag( ACCESS_ATTR_UI ); } // ui_****
         )?
 
         ( LOOKAHEAD(2) <MULTI_LINE_DELIMITER> )*
@@ -437,16 +437,16 @@ void VariableDeclaration() #VariableDeclaration:
         )
         {
             jjtThis.symbol.setName( name.image );
-            jjtThis.symbol.type = Variable.getKSPTypeFromVariableName( name.image );
+            jjtThis.symbol.setType( SymbolDefinition.Companion.getKSPTypeFromVariableName( name.image ) );
         }
     )
     {
         if( uiType != null )
         {
-            jjtThis.symbol.uiTypeName = uiType.image;
+            jjtThis.symbol.setUiTypeName( uiType.image );
         }
-        jjtThis.symbol.position.copy( symbol );
-        jjtThis.symbol.symbolType = SymbolDefinition.SymbolType.Variable;
+        jjtThis.symbol.getPosition().copy( symbol );
+        jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.Variable );
     }
 }
 
@@ -523,17 +523,17 @@ void CallbackDeclaration() #CallbackDeclaration:
     )
     {
         jjtThis.symbol.setName( symbol.image );
-        jjtThis.symbol.position.copy( symbol );
-        jjtThis.symbol.position.endLine   = end.endLine;
-        jjtThis.symbol.position.endColumn = end.endColumn;
-        jjtThis.symbol.symbolType = SymbolDefinition.SymbolType.Callback;
-        if( this.currentScopeLineCounter >= KSPLanguageLimitations.OVERFLOW_LINES )
+        jjtThis.symbol.getPosition().copy( symbol );
+        jjtThis.symbol.getPosition().setEndLine( end.endLine );
+        jjtThis.symbol.getPosition().setEndColumn( end.endColumn );
+        jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.Callback );
+        if( this.currentScopeLineCounter >= KSPLanguageLimitations.INSTANCE.getOverflowLines() )
         {
-            MessageManager.println(
+            MessageManager.INSTANCE.println(
                 MessageManager.PROPERTY_WARNING_TOOMUCH_LINECOUNT,
                 MessageManager.Level.WARNING,
                 jjtThis.symbol,
-                String.valueOf( jjtThis.symbol.position.lineCount() )
+                String.valueOf( jjtThis.symbol.getPosition().lineCount() )
             );
         }
     }
@@ -589,17 +589,17 @@ void UserFunctionDeclaration() #UserFunctionDeclaration:
     )
     {
         jjtThis.symbol.setName( symbol.image );
-        jjtThis.symbol.position.copy( symbol );
-        jjtThis.symbol.position.endLine   = end.endLine;
-        jjtThis.symbol.position.endColumn = end.endColumn;
-        jjtThis.symbol.symbolType = SymbolDefinition.SymbolType.UserFunction;
-        if( this.currentScopeLineCounter >= KSPLanguageLimitations.OVERFLOW_LINES )
+        jjtThis.symbol.getPosition().copy( symbol );
+        jjtThis.symbol.getPosition().setEndLine( end.endLine );
+        jjtThis.symbol.getPosition().setEndColumn( end.endColumn );
+        jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.UserFunction );
+        if( this.currentScopeLineCounter >= KSPLanguageLimitations.INSTANCE.getOverflowLines() )
         {
-            MessageManager.println(
+            MessageManager.INSTANCE.println(
                 MessageManager.PROPERTY_WARNING_TOOMUCH_LINECOUNT,
                 MessageManager.Level.WARNING,
                 jjtThis.symbol,
-                String.valueOf( jjtThis.symbol.position.lineCount() )
+                String.valueOf( jjtThis.symbol.getPosition().lineCount() )
             );
         }
     }
@@ -689,8 +689,8 @@ void PreProcessorDefine() #PreProcessorDefine:
     )
     {
         jjtThis.symbol.setName( symbol.image );
-        jjtThis.symbol.position.copy( symbol );
-        jjtThis.symbol.symbolType   = SymbolDefinition.SymbolType.PreprocessorSymbol;
+        jjtThis.symbol.getPosition().copy( symbol );
+        jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.PreprocessorSymbol );
     }
 }
 
@@ -713,8 +713,8 @@ void PreProcessorUnDefine() #PreProcessorUnDefine:
     )
     {
         jjtThis.symbol.setName( symbol.image );
-        jjtThis.symbol.position.copy( symbol );
-        jjtThis.symbol.symbolType   = SymbolDefinition.SymbolType.PreprocessorSymbol;
+        jjtThis.symbol.getPosition().copy( symbol );
+        jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.PreprocessorSymbol );
     }
 }
 
@@ -739,8 +739,8 @@ void PreProcessorIfDefined() #PreProcessorIfDefined:
     )
     {
         jjtThis.symbol.setName( symbol.image );
-        jjtThis.symbol.position.copy( symbol );
-        jjtThis.symbol.symbolType   = SymbolDefinition.SymbolType.PreprocessorSymbol;
+        jjtThis.symbol.getPosition().copy( symbol );
+        jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.PreprocessorSymbol );
     }
 }
 
@@ -765,8 +765,8 @@ void PreProcessorIfUnDefined() #PreProcessorIfUnDefined:
     )
     {
         jjtThis.symbol.setName( symbol.image );
-        jjtThis.symbol.position.copy( symbol );
-        jjtThis.symbol.symbolType   = SymbolDefinition.SymbolType.PreprocessorSymbol;
+        jjtThis.symbol.getPosition().copy( symbol );
+        jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.PreprocessorSymbol );
     }
 }
 
@@ -865,8 +865,8 @@ void CallUserFunctionStatement() #CallUserFunctionStatement:
     <CALL> (<MULTI_LINE_DELIMITER>)* symbol = <IDENTIFIER>
     {
         jjtThis.symbol.setName( symbol.image );
-        jjtThis.symbol.position.copy( symbol );
-        jjtThis.symbol.symbolType = SymbolDefinition.SymbolType.UserFunction;
+        jjtThis.symbol.getPosition().copy( symbol );
+        jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.UserFunction );
     }
 }
 
@@ -907,8 +907,8 @@ void ConditionalExpression():
     (
         token = <BOOL_OR> StringConcatenateExpression()
         {
-            jjtThis.symbol.position.copy( token );
-            jjtThis.symbol.type  = TYPE_BOOL;
+            jjtThis.symbol.getPosition().copy( token );
+            jjtThis.symbol.setType( TYPE_BOOL );
         } #ConditionalOr(2)
 |
         token = <BOOL_AND> StringConcatenateExpression()
@@ -1186,9 +1186,9 @@ void RefVariable() #RefVariable :
     )
     {
         jjtThis.symbol.setName( symbol.image );
-        jjtThis.symbol.type       = Variable.getKSPTypeFromVariableName( symbol.image );
-        jjtThis.symbol.position.copy( symbol );
-        jjtThis.symbol.symbolType = SymbolDefinition.SymbolType.Variable;
+        jjtThis.symbol.setType( SymbolDefinition.Companion.getKSPTypeFromVariableName( symbol.image ) );
+        jjtThis.symbol.getPosition().copy( symbol );
+        jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.Variable );
     }
 }
 
@@ -1214,8 +1214,8 @@ void CallCommand() #CallCommand:
         symbol = <IDENTIFIER>
         {
             jjtThis.symbol.setName( symbol.image );
-            jjtThis.symbol.position.copy( symbol );
-            jjtThis.symbol.symbolType = SymbolDefinition.SymbolType.Command;
+            jjtThis.symbol.getPosition().copy( symbol );
+            jjtThis.symbol.setSymbolType( SymbolDefinition.SymbolType.Command );
         }
         [ LOOKAHEAD(2) CommandArguments( jjtThis ) ]
     )
@@ -1246,7 +1246,7 @@ void CommandArgumentList( ASTCallCommand cmd ) #CommandArgumentList:
             <COMMA> Expression()
     )*
     {
-        SymbolDefinition.copy( cmd.symbol, jjtThis.symbol );
+        SymbolDefinition.Companion.copy( cmd.symbol, jjtThis.symbol );
     }
 }
 

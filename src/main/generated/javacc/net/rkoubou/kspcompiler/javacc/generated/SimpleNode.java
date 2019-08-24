@@ -128,8 +128,8 @@ Override this method if you want to customize how the node dumps out its childre
             newNode.value    = newValue;
             newNode.parser   = parser;
             newNode.children = newChildren;
-            newSymbol.value  = newValue;
-            SymbolDefinition.copy( newSymbol, newNode.symbol );
+            newSymbol.setValue( newValue );
+            SymbolDefinition.Companion.copy( newSymbol, newNode.symbol );
             return newNode;
         }
         for( int i = 0; i < parent.jjtGetNumChildren(); i++ )
@@ -144,8 +144,8 @@ Override this method if you want to customize how the node dumps out its childre
             newNode.value    = newValue;
             newNode.parser   = n.parser;
             newNode.children = newChildren;
-            newSymbol.value  = newValue;
-            SymbolDefinition.copy( newSymbol, newNode.symbol );
+            newSymbol.setValue( newValue );
+            SymbolDefinition.Companion.copy( newSymbol, newNode.symbol );
             ( ( SimpleNode )parent ).children[ i ]  = newNode;
             break;
         }
@@ -241,7 +241,7 @@ Override this method if you want to customize how the node dumps out its childre
         @Override
         public boolean evalCondition( SimpleNode node, Boolean reserved )
         {
-            return node.symbol.reserved == reserved;
+            return node.symbol.getReserved() == reserved;
         }
     };
 

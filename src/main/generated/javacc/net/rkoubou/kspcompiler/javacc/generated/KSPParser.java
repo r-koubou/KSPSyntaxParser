@@ -82,9 +82,9 @@ public class KSPParser implements/*@bgen(jjtree)*/ KSPParserTreeConstants,Analyz
         {
             dest.symbol.setName( token.image );
         }
-        dest.symbol.position.copy( token );
-        dest.symbol.type        = type;
-        dest.symbol.symbolType  = symbolType;
+        dest.symbol.getPosition().copy( token );
+        dest.symbol.setType( type );
+        dest.symbol.setSymbolType( symbolType );
     }
 
     /**
@@ -93,22 +93,22 @@ public class KSPParser implements/*@bgen(jjtree)*/ KSPParserTreeConstants,Analyz
     void applyIntLiteral( Token token, SimpleNode dest )
     {
         String v = token.image.toLowerCase();
+        dest.symbol.setType( TYPE_INT );
         if( v.startsWith( "9" ) && v.endsWith( "h" ) )
         {
             // KSP 16進数 → Java 16進数
             // 0x80000000以上の値の扱いが特殊なので一迂回。
             // http://qiita.com/oboenikui/items/cfd396b08f20798f0b3e
             BigInteger bi = new BigInteger( v.substring( 1, v.length() - 1 ), 16 );
-            dest.symbol.value = bi.intValue();
+            dest.symbol.setValue( bi.intValue() );
         }
         else
         {
             // 10進数
             // KSPは signed 32bit int
             BigInteger bi = new BigInteger( v );    // KONTAKTと同様に、何桁になっても最後は下位32bitに切り詰める
-            dest.symbol.value = bi.intValue();
+            dest.symbol.setValue( bi.intValue() );
         }
-        dest.symbol.type      = TYPE_INT;
         applyAllLiteral( token, dest );
     }
 
@@ -117,8 +117,8 @@ public class KSPParser implements/*@bgen(jjtree)*/ KSPParserTreeConstants,Analyz
      */
     void applyRealLiteral( Token token, SimpleNode dest )
     {
-        dest.symbol.value = Double.valueOf( token.image );
-        dest.symbol.type  = TYPE_REAL;
+        dest.symbol.setType( TYPE_REAL );
+        dest.symbol.setValue( Double.valueOf( token.image ) );
         applyAllLiteral( token, dest );
     }
 
@@ -127,8 +127,8 @@ public class KSPParser implements/*@bgen(jjtree)*/ KSPParserTreeConstants,Analyz
      */
     void applyStringLiteral( Token token, SimpleNode dest )
     {
-        dest.symbol.value = token.image;
-        dest.symbol.type  = TYPE_STRING;
+        dest.symbol.setType( TYPE_STRING );
+        dest.symbol.setValue( token.image );
         applyAllLiteral( token, dest );
     }
 
@@ -137,11 +137,11 @@ public class KSPParser implements/*@bgen(jjtree)*/ KSPParserTreeConstants,Analyz
      */
     void applyAllLiteral( Token token, SimpleNode dest )
     {
-        dest.jjtSetValue( dest.symbol.value );
         dest.symbol.setName( "" );
-        dest.symbol.accessFlag   = ACCESS_ATTR_CONST;
-        dest.symbol.position.copy( token );
-        dest.symbol.symbolType   = SymbolDefinition.SymbolType.Literal;
+        dest.symbol.setSymbolType( SymbolDefinition.SymbolType.Literal );
+        dest.symbol.setAccessFlag( ACCESS_ATTR_CONST );
+        dest.jjtSetValue( dest.symbol.getValue() );
+        dest.symbol.getPosition().copy( token );
     }
 
     /**
@@ -149,8 +149,8 @@ public class KSPParser implements/*@bgen(jjtree)*/ KSPParserTreeConstants,Analyz
      */
     void errorSkipTo( ParseException e )
     {
-        MessageManager.println( e );
-        AnalyzeErrorCounter.e();
+        MessageManager.INSTANCE.println( e );
+        AnalyzeErrorCounter.INSTANCE.e();
         //e.printStackTrace();
         Token t = null;
         do
@@ -321,17 +321,17 @@ if (jjtc000) {
         switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
         case CONST:{
           jj_consume_token(CONST);
-jjtn000.symbol.accessFlag = ACCESS_ATTR_CONST;
+jjtn000.symbol.setAccessFlag( ACCESS_ATTR_CONST );
           break;
           }
         case POLYPHONIC:{
           jj_consume_token(POLYPHONIC);
-jjtn000.symbol.accessFlag = ACCESS_ATTR_POLY;
+jjtn000.symbol.setAccessFlag( ACCESS_ATTR_POLY );
           break;
           }
         case IDENTIFIER:{
           uiType = jj_consume_token(IDENTIFIER);
-jjtn000.symbol.accessFlag = ACCESS_ATTR_UI;
+jjtn000.symbol.setAccessFlag( ACCESS_ATTR_UI );
           break;
           }
         default:
@@ -361,15 +361,15 @@ jjtn000.symbol.accessFlag = ACCESS_ATTR_UI;
         ;
       }
 jjtn000.symbol.setName( name.image );
-            jjtn000.symbol.type = Variable.getKSPTypeFromVariableName( name.image );
+            jjtn000.symbol.setType( SymbolDefinition.Companion.getKSPTypeFromVariableName( name.image ) );
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 if( uiType != null )
         {
-            jjtn000.symbol.uiTypeName = uiType.image;
+            jjtn000.symbol.setUiTypeName( uiType.image );
         }
-        jjtn000.symbol.position.copy( symbol );
-        jjtn000.symbol.symbolType = SymbolDefinition.SymbolType.Variable;
+        jjtn000.symbol.getPosition().copy( symbol );
+        jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.Variable );
     } catch (Throwable jjte000) {
 if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -660,17 +660,17 @@ this.currentScopeLineCounter++;
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 jjtn000.symbol.setName( symbol.image );
-        jjtn000.symbol.position.copy( symbol );
-        jjtn000.symbol.position.endLine   = end.endLine;
-        jjtn000.symbol.position.endColumn = end.endColumn;
-        jjtn000.symbol.symbolType = SymbolDefinition.SymbolType.Callback;
-        if( this.currentScopeLineCounter >= KSPLanguageLimitations.OVERFLOW_LINES )
+        jjtn000.symbol.getPosition().copy( symbol );
+        jjtn000.symbol.getPosition().setEndLine( end.endLine );
+        jjtn000.symbol.getPosition().setEndColumn( end.endColumn );
+        jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.Callback );
+        if( this.currentScopeLineCounter >= KSPLanguageLimitations.INSTANCE.getOverflowLines() )
         {
-            MessageManager.println(
+            MessageManager.INSTANCE.println(
                 MessageManager.PROPERTY_WARNING_TOOMUCH_LINECOUNT,
                 MessageManager.Level.WARNING,
                 jjtn000.symbol,
-                String.valueOf( jjtn000.symbol.position.lineCount() )
+                String.valueOf( jjtn000.symbol.getPosition().lineCount() )
             );
         }
     } catch (Throwable jjte000) {
@@ -808,17 +808,17 @@ this.currentScopeLineCounter++;
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 jjtn000.symbol.setName( symbol.image );
-        jjtn000.symbol.position.copy( symbol );
-        jjtn000.symbol.position.endLine   = end.endLine;
-        jjtn000.symbol.position.endColumn = end.endColumn;
-        jjtn000.symbol.symbolType = SymbolDefinition.SymbolType.UserFunction;
-        if( this.currentScopeLineCounter >= KSPLanguageLimitations.OVERFLOW_LINES )
+        jjtn000.symbol.getPosition().copy( symbol );
+        jjtn000.symbol.getPosition().setEndLine( end.endLine );
+        jjtn000.symbol.getPosition().setEndColumn( end.endColumn );
+        jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.UserFunction );
+        if( this.currentScopeLineCounter >= KSPLanguageLimitations.INSTANCE.getOverflowLines() )
         {
-            MessageManager.println(
+            MessageManager.INSTANCE.println(
                 MessageManager.PROPERTY_WARNING_TOOMUCH_LINECOUNT,
                 MessageManager.Level.WARNING,
                 jjtn000.symbol,
-                String.valueOf( jjtn000.symbol.position.lineCount() )
+                String.valueOf( jjtn000.symbol.getPosition().lineCount() )
             );
         }
     } catch (Throwable jjte000) {
@@ -1062,8 +1062,8 @@ errorSkipTo( e );
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 jjtn000.symbol.setName( symbol.image );
-        jjtn000.symbol.position.copy( symbol );
-        jjtn000.symbol.symbolType   = SymbolDefinition.SymbolType.PreprocessorSymbol;
+        jjtn000.symbol.getPosition().copy( symbol );
+        jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.PreprocessorSymbol );
     } finally {
 if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
@@ -1125,8 +1125,8 @@ if (jjtc000) {
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 jjtn000.symbol.setName( symbol.image );
-        jjtn000.symbol.position.copy( symbol );
-        jjtn000.symbol.symbolType   = SymbolDefinition.SymbolType.PreprocessorSymbol;
+        jjtn000.symbol.getPosition().copy( symbol );
+        jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.PreprocessorSymbol );
     } finally {
 if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
@@ -1190,8 +1190,8 @@ if (jjtc000) {
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 jjtn000.symbol.setName( symbol.image );
-        jjtn000.symbol.position.copy( symbol );
-        jjtn000.symbol.symbolType   = SymbolDefinition.SymbolType.PreprocessorSymbol;
+        jjtn000.symbol.getPosition().copy( symbol );
+        jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.PreprocessorSymbol );
     } catch (Throwable jjte000) {
 if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -1269,8 +1269,8 @@ if (jjtc000) {
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 jjtn000.symbol.setName( symbol.image );
-        jjtn000.symbol.position.copy( symbol );
-        jjtn000.symbol.symbolType   = SymbolDefinition.SymbolType.PreprocessorSymbol;
+        jjtn000.symbol.getPosition().copy( symbol );
+        jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.PreprocessorSymbol );
     } catch (Throwable jjte000) {
 if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -1689,8 +1689,8 @@ if (jjtc000) {
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 jjtn000.symbol.setName( symbol.image );
-        jjtn000.symbol.position.copy( symbol );
-        jjtn000.symbol.symbolType = SymbolDefinition.SymbolType.UserFunction;
+        jjtn000.symbol.getPosition().copy( symbol );
+        jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.UserFunction );
     } finally {
 if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);
@@ -1776,8 +1776,8 @@ ASTConditionalOr jjtn001 = new ASTConditionalOr(this, JJTCONDITIONALOR);
         try {
 jjtree.closeNodeScope(jjtn001,  2);
           jjtc001 = false;
-jjtn001.symbol.position.copy( token );
-            jjtn001.symbol.type  = TYPE_BOOL;
+jjtn001.symbol.getPosition().copy( token );
+            jjtn001.symbol.setType( TYPE_BOOL );
         } finally {
 if (jjtc001) {
             jjtree.closeNodeScope(jjtn001,  2);
@@ -2519,9 +2519,9 @@ if (jjtc000) {
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 jjtn000.symbol.setName( symbol.image );
-        jjtn000.symbol.type       = Variable.getKSPTypeFromVariableName( symbol.image );
-        jjtn000.symbol.position.copy( symbol );
-        jjtn000.symbol.symbolType = SymbolDefinition.SymbolType.Variable;
+        jjtn000.symbol.setType( SymbolDefinition.Companion.getKSPTypeFromVariableName( symbol.image ) );
+        jjtn000.symbol.getPosition().copy( symbol );
+        jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.Variable );
     } catch (Throwable jjte000) {
 if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -2585,8 +2585,8 @@ if (jjtc000) {
     try {
       symbol = jj_consume_token(IDENTIFIER);
 jjtn000.symbol.setName( symbol.image );
-            jjtn000.symbol.position.copy( symbol );
-            jjtn000.symbol.symbolType = SymbolDefinition.SymbolType.Command;
+            jjtn000.symbol.getPosition().copy( symbol );
+            jjtn000.symbol.setSymbolType( SymbolDefinition.SymbolType.Command );
       if (jj_2_20(2)) {
         CommandArguments(jjtn000);
       } else {
@@ -2678,7 +2678,7 @@ if (jjtc000) {
       }
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
-SymbolDefinition.copy( cmd.symbol, jjtn000.symbol );
+SymbolDefinition.Companion.copy( cmd.symbol, jjtn000.symbol );
     } catch (Throwable jjte000) {
 if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);

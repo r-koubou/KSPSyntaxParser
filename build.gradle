@@ -42,9 +42,19 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+sourceSets {
+    main{
+        kotlin{
+            // Referece to Java classes
+            srcDirs += 'src/main/generated/javacc'
+        }
+    }
+}
+
+
 application {
     // Define the main class for the application
-    mainClassName = 'net.rkoubou.kspcompiler.KSPCompiler'
+    mainClassName = 'net.rkoubou.kspcompiler.KSPCompilerKt'
 }
 
 javacc {
