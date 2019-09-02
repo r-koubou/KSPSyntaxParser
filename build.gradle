@@ -8,6 +8,11 @@ plugins {
     // Apply the application plugin to add support for building a CLI application
     id 'application'
 
+    // The ANTLR plugin
+    // See: https://docs.gradle.org/current/userguide/antlr_plugin.html
+    // Ja : http://gradle.monochromeroad.com/docs/userguide/antlr_plugin.html
+    id "antlr"
+
     // A Gradle plugin for collapsing all dependencies and project code into a single Jar file.
     id "com.github.johnrengelman.shadow" version "5.1.0"
 
@@ -21,10 +26,14 @@ repositories {
     // Use jcenter for resolving dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    // https://mvnrepository.com/artifact/org.antlr/antlr4
+    antlr group: 'org.antlr', name: 'antlr4', version: '4.7.2'
 
     // https://mvnrepository.com/artifact/args4j/args4j
     compile group: 'args4j', name: 'args4j', version: '2.33'
@@ -42,13 +51,15 @@ compileTestKotlin {
 
 sourceSets {
     main{
-        kotlin{
+        kotlin {
             // Referece to Java classes
-            //srcDirs += 'src/main/generated/javacc'
+            srcDirs += 'build/generated-src/antlr/main'
+        }
+        java {
+            srcDirs += 'build/generated-src/antlr/main'
         }
     }
 }
-
 
 application {
     mainClassName = 'net.rkoubou.kspcompiler.KSPCompilerKt'
