@@ -11,8 +11,6 @@ plugins {
     // A Gradle plugin for collapsing all dependencies and project code into a single Jar file.
     id "com.github.johnrengelman.shadow" version "5.1.0"
 
-    // JavaCC
-    id "com.intershop.gradle.javacc" version "3.0.3"
 }
 
 version '1.0.0'
@@ -46,29 +44,14 @@ sourceSets {
     main{
         kotlin{
             // Referece to Java classes
-            srcDirs += 'src/main/generated/javacc'
+            //srcDirs += 'src/main/generated/javacc'
         }
     }
 }
 
 
 application {
-    // Define the main class for the application
     mainClassName = 'net.rkoubou.kspcompiler.KSPCompilerKt'
-}
-
-javacc {
-    javaCCVersion = '6.1.0'
-    configs {
-        template {
-            inputFile = file('src/main/javacc/KSPParser.jjt')
-            outputDir = file('src/main/generated/javacc')
-            packageName = 'net.rkoubou.kspcompiler.javacc.generated'
-            jjtree {
-                // options are written at jjt file
-            }
-        }
-    }
 }
 
 shadowJar {
