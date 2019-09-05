@@ -53,12 +53,29 @@ sourceSets {
     main{
         kotlin {
             // Referece to Java classes
-            srcDirs += 'build/generated-src/antlr/main'
+            srcDirs += 'src/main/generated/antlr'
         }
         java {
-            srcDirs += 'build/generated-src/antlr/main'
+            srcDirs += 'src/main/generated/antlr'
         }
     }
+}
+
+// ANTLR
+generateGrammarSource {
+    outputDirectory = file('src/main/generated/antlr/net/rkoubou/kspcompiler/generated/antlr')
+    arguments << '-package' << 'net.rkoubou.kspcompiler.generated.antlr'
+
+// If edting on IntelliJ IDEA, use following
+// It will be solved which *.g4 files refernces files
+/*
+    arguments << '-lib' << 'src/main/generated/antlr/net/rkoubou/kspcompiler/generated/antlr'
+    copy {
+        from outputDirectory
+        into 'src/main/antlr'
+        include '*.tokens'
+    }
+*/
 }
 
 application {

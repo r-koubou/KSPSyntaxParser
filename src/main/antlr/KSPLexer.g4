@@ -7,12 +7,6 @@
 
 lexer grammar KSPLexer;
 
-@header {
-    package net.rkoubou.kspcompiler.generated.antlr;
-}
-
-// Note: Token which prefix is 'EXT_', it is extended feature from pure KSP language specification.
-
 //------------------------------------------------------------------------------
 // Keyword (KSP standard)
 //------------------------------------------------------------------------------
@@ -35,10 +29,6 @@ lexer grammar KSPLexer;
     CALL:                   'call';
 
 //------------------------------------------------------------------------------
-// Keyword (extended)
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
 // Preprocessor (KSP standard)
 //------------------------------------------------------------------------------
 
@@ -49,30 +39,18 @@ lexer grammar KSPLexer;
     PREPROCESSOR_CODE_END_IF:   'END_USE_CODE';
 
 //------------------------------------------------------------------------------
-// Preprocessor (extended)
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
 // Literal
 //------------------------------------------------------------------------------
 
 INTEGER_LITERAL
     : DECIMAL_LITERAL
-    | HEX_LITERAL
-    | EXT_HEX_LITERAL
-    | EXT_BIN_LITERAL;
+    | HEX_LITERAL;
 
 fragment DECIMAL_LITERAL:
     '1'..'9' '0'..'9'*;
 
 fragment HEX_LITERAL:
     '9' ('0'..'9' | 'a'..'f' | 'A'..'F')+ ('h' | 'H');
-
-fragment EXT_HEX_LITERAL:
-    '0x' ('0'..'9' | 'a'..'f' | 'A'..'F')+;
-
-fragment EXT_BIN_LITERAL:
-    '0b' [01]+;
 
 STRING_LITERAL:
     '"'
