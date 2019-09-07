@@ -67,7 +67,7 @@ generateGrammarSource {
     arguments << '-package' << 'net.rkoubou.kspcompiler.generated.antlr'
 
 // If edting on IntelliJ IDEA, use following
-// It will be solved which *.g4 files refernces files
+// It will be solved which *.g4 files refernces
 /*
     arguments << '-lib' << 'src/main/generated/antlr/net/rkoubou/kspcompiler/generated/antlr'
     copy {
