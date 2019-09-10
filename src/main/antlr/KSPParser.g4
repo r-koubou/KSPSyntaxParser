@@ -11,4 +11,6 @@ options {
     tokenVocab = KSPLexer;
 }
 
-tmp: EOL;
+completionUnit
+    : CallbackDeclaration()
+    | EOL;
