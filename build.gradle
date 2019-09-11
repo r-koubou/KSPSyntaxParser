@@ -21,6 +21,7 @@ plugins {
 version '1.0.0'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     // Use jcenter for resolving dependencies.
@@ -79,7 +80,14 @@ generateGrammarSource {
 }
 
 application {
-    mainClassName = 'net.rkoubou.kspcompiler.KSPCompilerKt'
+    mainClassName = 'net.rkoubou.kspcompiler.KSPCompiler'
+}
+
+run {
+    if(project.hasProperty( 'args' ) )
+    {
+        args project.args.split( '\\s+' )
+    }
 }
 
 shadowJar {

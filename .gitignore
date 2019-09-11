@@ -24,8 +24,7 @@ bin
 .project
 
 # My rule
-deploy/
-target/
+.antlr/
 .temp/
 .org
 .java.org
