@@ -14,5 +14,6 @@ public class KSPCompiler
         KSPLexer lexer = new KSPLexer(stream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         KSPParser parser = new KSPParser(tokenStream);
+        parser.compilationUnit();
     }
 }

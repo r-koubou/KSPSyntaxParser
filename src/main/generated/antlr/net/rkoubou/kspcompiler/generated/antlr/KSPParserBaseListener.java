@@ -35,6 +35,30 @@ public class KSPParserBaseListener implements KSPParserListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCallbackDeclaration(KSPParser.CallbackDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBlock(KSPParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBlock(KSPParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStatement(KSPParser.StatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStatement(KSPParser.StatementContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

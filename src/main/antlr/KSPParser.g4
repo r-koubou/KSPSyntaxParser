@@ -11,6 +11,9 @@ options {
     tokenVocab = KSPLexer;
 }
 
+//
+// ルート
+//
 compilationUnit
     : callbackDeclaration
     | EOL;
@@ -20,5 +23,22 @@ compilationUnit
 //
 callbackDeclaration:
     ON (MULTI_LINE_DELIMITER)* IDENTIFIER (MULTI_LINE_DELIMITER)*
+    EOL
+    block
     END (MULTI_LINE_DELIMITER)* ON
+;
+
+//
+// コードブロック
+//
+block
+    : statement
+;
+
+//
+// ステートメント
+//
+statement
+    : MULTI_LINE_DELIMITER
+    | EOL
 ;
