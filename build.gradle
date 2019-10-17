@@ -67,16 +67,16 @@ generateGrammarSource {
     outputDirectory = file('src/main/generated/antlr/net/rkoubou/kspcompiler/generated/antlr')
     arguments << '-package' << 'net.rkoubou.kspcompiler.generated.antlr'
 
-// If edting on IntelliJ IDEA, use following
-// It will be solved which *.g4 files refernces
-/*
+// If edting on IntelliJ IDEA, use following copy task.
+// It will be solved which *.g4 files references to *.tokens
+
     arguments << '-lib' << 'src/main/generated/antlr/net/rkoubou/kspcompiler/generated/antlr'
     copy {
         from outputDirectory
         into 'src/main/antlr'
         include '*.tokens'
     }
-*/
+
 }
 
 application {
