@@ -83,12 +83,15 @@ application {
     mainClassName = 'net.rkoubou.kspcompiler.KSPCompiler'
 }
 
+// e.g.
+// ./gradle run -Pargs="arg1 arg2 arg3...."
 run {
     if(project.hasProperty( 'args' ) )
     {
         args project.args.split( '\\s+' )
     }
 }
+run.dependsOn jar
 
 shadowJar {
     archiveName = "${baseName}.${extension}" // use default jar file name.

@@ -14,8 +14,8 @@ lexer grammar KSPLexer;
 
 
 EOL
-    : CR LF
-    | LF
+    : LF
+    //| LF
     | MULTI_LINE_DELIMITER;
 
 fragment CR : '\r';

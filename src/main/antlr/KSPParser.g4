@@ -14,9 +14,13 @@ options {
 //
 // ルート
 //
-compilationUnit
-    : callbackDeclaration
-    | EOL;
+compilationUnit:
+(
+      callbackDeclaration
+    | EOL
+    | MULTI_LINE_DELIMITER
+)*
+;
 
 //
 // コールバック本体
@@ -31,14 +35,19 @@ callbackDeclaration:
 //
 // コードブロック
 //
-block
-    : statement
+block:
+    (blockStatement)*
 ;
+
+blockStatement:
+    statement
+;
+
 
 //
 // ステートメント
 //
-statement
-    : MULTI_LINE_DELIMITER
+statement:
+      MULTI_LINE_DELIMITER
     | EOL
 ;

@@ -1,5 +1,6 @@
 package net.rkoubou.kspcompiler;
 
+import net.rkoubou.kspcompiler.generated.antlr.KSPParserBaseListener;
 import org.antlr.v4.runtime.*;
 
 import net.rkoubou.kspcompiler.generated.antlr.KSPLexer;
@@ -10,10 +11,8 @@ public class KSPCompiler
 {
     public static void main(String[] args) throws Throwable
     {
-        CharStream stream = CharStreams.fromFileName(args[0]);
-        KSPLexer lexer = new KSPLexer(stream);
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        KSPParser parser = new KSPParser(tokenStream);
-        parser.compilationUnit();
+        System.out.println( args[0] );
+        SemanticAnalyzer analyzer = new SemanticAnalyzer( new KSPParserBaseListener() );
+        analyzer.analyze( args[0] );
     }
 }

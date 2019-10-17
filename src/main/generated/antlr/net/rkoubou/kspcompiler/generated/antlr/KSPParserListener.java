@@ -38,6 +38,16 @@ public interface KSPParserListener extends ParseTreeListener {
 	 */
 	void exitBlock(KSPParser.BlockContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link KSPParser#blockStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlockStatement(KSPParser.BlockStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link KSPParser#blockStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlockStatement(KSPParser.BlockStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link KSPParser#statement}.
 	 * @param ctx the parse tree
 	 */
