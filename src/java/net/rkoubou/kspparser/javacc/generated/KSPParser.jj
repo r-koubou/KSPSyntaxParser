@@ -290,6 +290,7 @@ TOKEN:
     | <TO: "to" >
     | <WHILE: "while" >
     | <CALL: "call" >
+    | <CONTINUE: "continue" >
 }
 
 //--------------------------------------------------------------------------
@@ -920,6 +921,7 @@ void Statement() :
         | IfStatement()
         | SelectStatement()
         | WhileStatement()
+        | ContinueStatement()
         | CallUserFunctionStatement()
         | <MULTI_LINE_DELIMITER>
         | <EOL> { this.currentScopeLineCounter++; }
@@ -1344,6 +1346,37 @@ void WhileStatement()                :
         throw (ParseException)jjte000;
       }
       throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
+
+//
+// continue
+//
+void ContinueStatement()                   :
+{/*@bgen(jjtree) ContinueStatement */
+    ASTContinueStatement jjtn000 = new ASTContinueStatement(this, JJTCONTINUESTATEMENT);
+    boolean jjtc000 = true;
+    jjtree.openNodeScope(jjtn000);
+/*@egen*/
+    Token token;
+}
+{/*@bgen(jjtree) ContinueStatement */
+    try {
+/*@egen*/
+    token = <CONTINUE>/*@bgen(jjtree)*/
+    {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+    }
+/*@egen*/
+    {
+        jjtn000.symbol.position.copy( token );
+    }/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
         jjtree.closeNodeScope(jjtn000, true);

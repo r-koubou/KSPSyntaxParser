@@ -22,32 +22,33 @@ public interface KSPParserTreeConstants
   public int JJTCASESTATEMENT = 16;
   public int JJTCASECONDITION = 17;
   public int JJTWHILESTATEMENT = 18;
-  public int JJTCALLUSERFUNCTIONSTATEMENT = 19;
-  public int JJTASSIGNMENT = 20;
-  public int JJTCONDITIONALOR = 21;
-  public int JJTCONDITIONALAND = 22;
-  public int JJTSTRADD = 23;
-  public int JJTBITWISEOR = 24;
-  public int JJTBITWISEAND = 25;
-  public int JJTEQUAL = 26;
-  public int JJTNOTEQUAL = 27;
-  public int JJTLT = 28;
-  public int JJTGT = 29;
-  public int JJTLE = 30;
-  public int JJTGE = 31;
-  public int JJTADD = 32;
-  public int JJTSUB = 33;
-  public int JJTMUL = 34;
-  public int JJTDIV = 35;
-  public int JJTMOD = 36;
-  public int JJTNEG = 37;
-  public int JJTNOT = 38;
-  public int JJTLOGICALNOT = 39;
-  public int JJTLITERAL = 40;
-  public int JJTREFVARIABLE = 41;
-  public int JJTARRAYINDEX = 42;
-  public int JJTCALLCOMMAND = 43;
-  public int JJTCOMMANDARGUMENTLIST = 44;
+  public int JJTCONTINUESTATEMENT = 19;
+  public int JJTCALLUSERFUNCTIONSTATEMENT = 20;
+  public int JJTASSIGNMENT = 21;
+  public int JJTCONDITIONALOR = 22;
+  public int JJTCONDITIONALAND = 23;
+  public int JJTSTRADD = 24;
+  public int JJTBITWISEOR = 25;
+  public int JJTBITWISEAND = 26;
+  public int JJTEQUAL = 27;
+  public int JJTNOTEQUAL = 28;
+  public int JJTLT = 29;
+  public int JJTGT = 30;
+  public int JJTLE = 31;
+  public int JJTGE = 32;
+  public int JJTADD = 33;
+  public int JJTSUB = 34;
+  public int JJTMUL = 35;
+  public int JJTDIV = 36;
+  public int JJTMOD = 37;
+  public int JJTNEG = 38;
+  public int JJTNOT = 39;
+  public int JJTLOGICALNOT = 40;
+  public int JJTLITERAL = 41;
+  public int JJTREFVARIABLE = 42;
+  public int JJTARRAYINDEX = 43;
+  public int JJTCALLCOMMAND = 44;
+  public int JJTCOMMANDARGUMENTLIST = 45;
 
 
   public String[] jjtNodeName = {
@@ -70,6 +71,7 @@ public interface KSPParserTreeConstants
     "CaseStatement",
     "CaseCondition",
     "WhileStatement",
+    "ContinueStatement",
     "CallUserFunctionStatement",
     "Assignment",
     "ConditionalOr",
@@ -98,4 +100,4 @@ public interface KSPParserTreeConstants
     "CommandArgumentList",
   };
 }
-/* JavaCC - OriginalChecksum=cfcc1aa43f6829bff29c3ad647771f3c (do not edit this line) */
+/* JavaCC - OriginalChecksum=3fcb6dd98360e4a6fcb693443c8de4ea (do not edit this line) */

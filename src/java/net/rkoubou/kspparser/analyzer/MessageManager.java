@@ -107,6 +107,7 @@ public class MessageManager
     static public final String PROPERTY_WARNING_SEMANTIC_CASEVALUE              = "warning.semantic.casevalue";
     static public final String PROPERTY_ERROR_SEMANTIC_CASEVALUE_CONSTONLY      = "error.semantic.casevalue.constonly";
     static public final String PROPERTY_ERROR_SEMANTIC_CONDITION_INVALID        = "error.semantic.condition.invalid";
+    static public final String PROPERTY_ERROR_SEMANTIC_CONTINUE_INVALID         = "error.semantic.continue.invalid";
 
     //--------------------------------------------------------------------------
     // サジェスト
