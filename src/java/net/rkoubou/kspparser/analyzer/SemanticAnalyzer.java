@@ -19,6 +19,7 @@ import net.rkoubou.kspparser.javacc.generated.ASTCallUserFunctionStatement;
 import net.rkoubou.kspparser.javacc.generated.ASTCallbackDeclaration;
 import net.rkoubou.kspparser.javacc.generated.ASTCaseCondition;
 import net.rkoubou.kspparser.javacc.generated.ASTCommandArgumentList;
+import net.rkoubou.kspparser.javacc.generated.ASTContinueStatement;
 import net.rkoubou.kspparser.javacc.generated.ASTIfStatement;
 import net.rkoubou.kspparser.javacc.generated.ASTPrimitiveInititalizer;
 import net.rkoubou.kspparser.javacc.generated.ASTRefVariable;
@@ -27,6 +28,7 @@ import net.rkoubou.kspparser.javacc.generated.ASTUserFunctionDeclaration;
 import net.rkoubou.kspparser.javacc.generated.ASTVariableDeclaration;
 import net.rkoubou.kspparser.javacc.generated.ASTVariableInitializer;
 import net.rkoubou.kspparser.javacc.generated.ASTWhileStatement;
+import net.rkoubou.kspparser.javacc.generated.Node;
 import net.rkoubou.kspparser.javacc.generated.SimpleNode;
 import net.rkoubou.kspparser.options.CommandlineOptions;
 
@@ -1438,5 +1440,39 @@ SEARCH:
         // <block>
         node.childrenAccept( this, data );
         return cond;
+    }
+
+    /**
+     * continue の評価
+     */
+    @Override
+    public Object visit( ASTContinueStatement node, Object data )
+    {
+/*
+         <while>
+            -> <block>
+              -> <continue> // now
+*/
+        //--------------------------------------------------------------------------
+        // whileブロック内から呼び出されたかチェック
+        //--------------------------------------------------------------------------
+        {
+            Node parent = node.jjtGetParent();
+            while( parent != null )
+            {
+                if( parent.getId() == JJTWHILESTATEMENT )
+                {
+                    break;
+                }
+                parent = parent.jjtGetParent();
+            }
+
+            if( parent == null )
+            {
+                MessageManager.printlnE( MessageManager.PROPERTY_ERROR_SEMANTIC_CONTINUE_INVALID, node.symbol );
+                AnalyzeErrorCounter.e();
+            }
+        }
+        return node;
     }
 }
