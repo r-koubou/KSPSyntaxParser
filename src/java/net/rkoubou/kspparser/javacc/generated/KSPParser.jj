@@ -289,8 +289,8 @@ TOKEN:
     | <CASE: "case" >
     | <TO: "to" >
     | <WHILE: "while" >
-    | <CALL: "call" >
     | <CONTINUE: "continue" >
+    | <CALL: "call" >
 }
 
 //--------------------------------------------------------------------------

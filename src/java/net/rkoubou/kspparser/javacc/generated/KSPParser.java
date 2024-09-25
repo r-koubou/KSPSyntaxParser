@@ -898,8 +898,8 @@ if (jjtc000) {
     case IF:
     case SELECT:
     case WHILE:
-    case CALL:
     case CONTINUE:
+    case CALL:
     case PREPROCESSOR_SET_COND:
     case PREPROCESSOR_RESET_COND:
     case PREPROCESSOR_CODE_IF:

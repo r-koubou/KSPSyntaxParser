@@ -55,9 +55,9 @@ public interface KSPParserConstants {
   /** RegularExpression Id. */
   int WHILE = 27;
   /** RegularExpression Id. */
-  int CALL = 28;
+  int CONTINUE = 28;
   /** RegularExpression Id. */
-  int CONTINUE = 29;
+  int CALL = 29;
   /** RegularExpression Id. */
   int PREPROCESSOR_SET_COND = 30;
   /** RegularExpression Id. */
@@ -170,8 +170,8 @@ public interface KSPParserConstants {
     "\"case\"",
     "\"to\"",
     "\"while\"",
-    "\"call\"",
     "\"continue\"",
+    "\"call\"",
     "\"SET_CONDITION\"",
     "\"RESET_CONDITION\"",
     "\"USE_CODE_IF\"",
