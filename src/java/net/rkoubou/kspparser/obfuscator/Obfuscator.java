@@ -28,6 +28,7 @@ import net.rkoubou.kspparser.javacc.generated.ASTCaseCondition;
 import net.rkoubou.kspparser.javacc.generated.ASTCommandArgumentList;
 import net.rkoubou.kspparser.javacc.generated.ASTConditionalAnd;
 import net.rkoubou.kspparser.javacc.generated.ASTConditionalOr;
+import net.rkoubou.kspparser.javacc.generated.ASTContinueStatement;
 import net.rkoubou.kspparser.javacc.generated.ASTDiv;
 import net.rkoubou.kspparser.javacc.generated.ASTEqual;
 import net.rkoubou.kspparser.javacc.generated.ASTGE;
@@ -1084,6 +1085,22 @@ public class Obfuscator extends BasicEvaluationAnalyzerTemplate
         outputCode.append( "end while" );
         appendEOL();
 
+        return node;
+    }
+
+    /**
+     * continue の評価
+     */
+    @Override
+    public Object visit( ASTContinueStatement node, Object data )
+    {
+/*
+         <while>
+            -> <block>
+              -> <continue> // now
+*/
+        outputCode.append( "continue" );
+        appendEOL();
         return node;
     }
 

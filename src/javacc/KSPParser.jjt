@@ -285,6 +285,7 @@ TOKEN:
     | <CASE: "case" >
     | <TO: "to" >
     | <WHILE: "while" >
+    | <CONTINUE: "continue" >
     | <CALL: "call" >
 }
 
@@ -647,6 +648,7 @@ void Statement() :
         | IfStatement()
         | SelectStatement()
         | WhileStatement()
+        | ContinueStatement()
         | CallUserFunctionStatement()
         | <MULTI_LINE_DELIMITER>
         | <EOL> { this.currentScopeLineCounter++; }
@@ -851,6 +853,20 @@ void WhileStatement() #WhileStatement:
         Block()                                 // <statement>+
     )
     <END> (<MULTI_LINE_DELIMITER>)* <WHILE>
+}
+
+//
+// continue
+//
+void ContinueStatement() #ContinueStatement:
+{
+    Token token;
+}
+{
+    token = <CONTINUE>
+    {
+        jjtThis.symbol.position.copy( token );
+    }
 }
 
 //
