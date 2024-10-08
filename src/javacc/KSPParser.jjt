@@ -329,6 +329,7 @@ TOKEN:
     | <BOOL_NE: "#">
     | <BOOL_NOT: "not">
     | <BOOL_AND: "and">
+    | <BOOL_XOR: "xor">
     | <BOOL_OR: "or">
     // 算術演算子
     | <ASSIGN: ":=" >
@@ -340,6 +341,7 @@ TOKEN:
     | <BIT_AND: ".and." >
     | <BIT_OR: ".or." >
     | <BIT_NOT: ".not." >
+    | <BIT_XOR: ".xor." >
     //TODO ビットシフトはコマンドなので演算子扱いしない
     // 文字列連結
     | <STRING_ADD: "&" >
@@ -910,7 +912,7 @@ void Assignment() #Assignment:
 }
 
 //
-// 条件式 AND / OR
+// 条件式 AND / OR / XOR
 //
 void ConditionalExpression():
 {
@@ -930,6 +932,11 @@ void ConditionalExpression():
         {
             applyToSymbol( token, jjtThis, TYPE_BOOL, SymbolType.Expression );
         } #ConditionalAnd(2)
+|
+        token = <BOOL_XOR> StringConcatenateExpression()
+        {
+            applyToSymbol( token, jjtThis, TYPE_BOOL, SymbolType.Expression );
+        } #ConditionalXor(2)
     )*
 }
 
@@ -952,7 +959,7 @@ void StringConcatenateExpression() :
 }
 
 //
-// 論理積, 論理和
+// 論理積, 論理和, 排他的論理和
 //
 void BitwiseExpression() :
 {
@@ -971,6 +978,11 @@ void BitwiseExpression() :
         {
             applyToSymbol( token, jjtThis, TYPE_INT, SymbolType.Expression );
         } #BitwiseAnd(2)
+|
+        token = <BIT_XOR> EqualityExpression()
+        {
+            applyToSymbol( token, jjtThis, TYPE_INT, SymbolType.Expression );
+        } #BitwiseXor(2)
     )*
 }
 

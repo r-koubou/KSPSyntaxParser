@@ -97,43 +97,47 @@ public interface KSPParserConstants {
   /** RegularExpression Id. */
   int BOOL_AND = 48;
   /** RegularExpression Id. */
-  int BOOL_OR = 49;
+  int BOOL_XOR = 49;
   /** RegularExpression Id. */
-  int ASSIGN = 50;
+  int BOOL_OR = 50;
   /** RegularExpression Id. */
-  int PLUS = 51;
+  int ASSIGN = 51;
   /** RegularExpression Id. */
-  int MINUS = 52;
+  int PLUS = 52;
   /** RegularExpression Id. */
-  int MUL = 53;
+  int MINUS = 53;
   /** RegularExpression Id. */
-  int DIV = 54;
+  int MUL = 54;
   /** RegularExpression Id. */
-  int MOD = 55;
+  int DIV = 55;
   /** RegularExpression Id. */
-  int BIT_AND = 56;
+  int MOD = 56;
   /** RegularExpression Id. */
-  int BIT_OR = 57;
+  int BIT_AND = 57;
   /** RegularExpression Id. */
-  int BIT_NOT = 58;
+  int BIT_OR = 58;
   /** RegularExpression Id. */
-  int STRING_ADD = 59;
+  int BIT_NOT = 59;
   /** RegularExpression Id. */
-  int LPAREN = 60;
+  int BIT_XOR = 60;
   /** RegularExpression Id. */
-  int RPAREN = 61;
+  int STRING_ADD = 61;
   /** RegularExpression Id. */
-  int LBRACKET = 62;
+  int LPAREN = 62;
   /** RegularExpression Id. */
-  int RBRACKET = 63;
+  int RPAREN = 63;
   /** RegularExpression Id. */
-  int COMMA = 64;
+  int LBRACKET = 64;
   /** RegularExpression Id. */
-  int IDENTIFIER = 65;
+  int RBRACKET = 65;
   /** RegularExpression Id. */
-  int LETTER = 66;
+  int COMMA = 66;
   /** RegularExpression Id. */
-  int PART_LETTER = 67;
+  int IDENTIFIER = 67;
+  /** RegularExpression Id. */
+  int LETTER = 68;
+  /** RegularExpression Id. */
+  int PART_LETTER = 69;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -191,6 +195,7 @@ public interface KSPParserConstants {
     "\"#\"",
     "\"not\"",
     "\"and\"",
+    "\"xor\"",
     "\"or\"",
     "\":=\"",
     "\"+\"",
@@ -201,6 +206,7 @@ public interface KSPParserConstants {
     "\".and.\"",
     "\".or.\"",
     "\".not.\"",
+    "\".xor.\"",
     "\"&\"",
     "\"(\"",
     "\")\"",

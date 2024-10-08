@@ -224,6 +224,7 @@ public class EvaluationUtility implements AnalyzerConstants, KSPParserTreeConsta
                 case JJTMOD:            return numL % numR;
                 case JJTBITWISEOR:      return numL | numR;
                 case JJTBITWISEAND:     return numL & numR;
+                case JJTBITWISEXOR:     return numL ^ numR;
                 default:
                     return null;
             }

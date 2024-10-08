@@ -19,6 +19,7 @@ import net.rkoubou.kspparser.javacc.generated.ASTArrayInitializer;
 import net.rkoubou.kspparser.javacc.generated.ASTAssignment;
 import net.rkoubou.kspparser.javacc.generated.ASTBitwiseAnd;
 import net.rkoubou.kspparser.javacc.generated.ASTBitwiseOr;
+import net.rkoubou.kspparser.javacc.generated.ASTBitwiseXor;
 import net.rkoubou.kspparser.javacc.generated.ASTBlock;
 import net.rkoubou.kspparser.javacc.generated.ASTCallCommand;
 import net.rkoubou.kspparser.javacc.generated.ASTCallUserFunctionStatement;
@@ -28,6 +29,7 @@ import net.rkoubou.kspparser.javacc.generated.ASTCaseCondition;
 import net.rkoubou.kspparser.javacc.generated.ASTCommandArgumentList;
 import net.rkoubou.kspparser.javacc.generated.ASTConditionalAnd;
 import net.rkoubou.kspparser.javacc.generated.ASTConditionalOr;
+import net.rkoubou.kspparser.javacc.generated.ASTConditionalXor;
 import net.rkoubou.kspparser.javacc.generated.ASTContinueStatement;
 import net.rkoubou.kspparser.javacc.generated.ASTDiv;
 import net.rkoubou.kspparser.javacc.generated.ASTEqual;
@@ -490,6 +492,16 @@ public class Obfuscator extends BasicEvaluationAnalyzerTemplate
     }
 
     /**
+     * 条件式 XOR
+     */
+    @Override
+    public Object visit( ASTConditionalXor node, Object data )
+    {
+        appendConditionalNode( node, data, " xor " );
+        return node;
+    }
+
+    /**
      * 論理積
      */
     @Override
@@ -506,6 +518,16 @@ public class Obfuscator extends BasicEvaluationAnalyzerTemplate
     public Object visit( ASTBitwiseAnd node, Object data )
     {
         appendBinaryOperatorNode( node, data, " .and. " );
+        return node;
+    }
+
+    /**
+     * 排他的論理和
+     */
+    @Override
+    public Object visit( ASTBitwiseXor node, Object data )
+    {
+        appendBinaryOperatorNode( node, data, " .xor. " );
         return node;
     }
 

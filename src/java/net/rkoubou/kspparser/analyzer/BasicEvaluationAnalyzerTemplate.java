@@ -11,9 +11,11 @@ import net.rkoubou.kspparser.analyzer.SymbolDefinition.SymbolType;
 import net.rkoubou.kspparser.javacc.generated.ASTAdd;
 import net.rkoubou.kspparser.javacc.generated.ASTBitwiseAnd;
 import net.rkoubou.kspparser.javacc.generated.ASTBitwiseOr;
+import net.rkoubou.kspparser.javacc.generated.ASTBitwiseXor;
 import net.rkoubou.kspparser.javacc.generated.ASTCallUserFunctionStatement;
 import net.rkoubou.kspparser.javacc.generated.ASTConditionalAnd;
 import net.rkoubou.kspparser.javacc.generated.ASTConditionalOr;
+import net.rkoubou.kspparser.javacc.generated.ASTConditionalXor;
 import net.rkoubou.kspparser.javacc.generated.ASTDiv;
 import net.rkoubou.kspparser.javacc.generated.ASTEqual;
 import net.rkoubou.kspparser.javacc.generated.ASTGE;
@@ -100,6 +102,24 @@ abstract public class BasicEvaluationAnalyzerTemplate extends AbstractAnalyzer
     }
 
     /**
+     * 条件式 XOR
+     */
+    @Override
+    public Object visit( ASTConditionalXor node, Object data )
+    {
+/*
+                xor
+                 +
+                 |
+            +----+----+
+            |         |
+        0: <expr>   1:<expr>
+*/
+
+        return EvaluationUtility.evalBinaryBooleanOperator( node, this, data, variableTable );
+    }
+
+    /**
      * 論理積
      */
     @Override
@@ -113,6 +133,15 @@ abstract public class BasicEvaluationAnalyzerTemplate extends AbstractAnalyzer
      */
     @Override
     public Object visit( ASTBitwiseAnd node, Object data )
+    {
+        return EvaluationUtility.evalBinaryNumberOperator( node, this, data, variableTable );
+    }
+
+    /**
+     * 排他的論理和
+     */
+    @Override
+    public Object visit( ASTBitwiseXor node, Object data )
     {
         return EvaluationUtility.evalBinaryNumberOperator( node, this, data, variableTable );
     }

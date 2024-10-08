@@ -333,6 +333,7 @@ TOKEN:
     | <BOOL_NE: "#">
     | <BOOL_NOT: "not">
     | <BOOL_AND: "and">
+    | <BOOL_XOR: "xor">
     | <BOOL_OR: "or">
     // \u7b97\u8853\u6f14\u7b97\u5b50
     | <ASSIGN: ":=" >
@@ -344,6 +345,7 @@ TOKEN:
     | <BIT_AND: ".and." >
     | <BIT_OR: ".or." >
     | <BIT_NOT: ".not." >
+    | <BIT_XOR: ".xor." >
     //TODO \u30d3\u30c3\u30c8\u30b7\u30d5\u30c8\u306f\u30b3\u30de\u30f3\u30c9\u306a\u306e\u3067\u6f14\u7b97\u5b50\u6271\u3044\u3057\u306a\u3044
     // \u6587\u5b57\u5217\u9023\u7d50
     | <STRING_ADD: "&" >
@@ -1474,7 +1476,7 @@ void Assignment()            :
 }
 
 //
-// \u6761\u4ef6\u5f0f AND / OR
+// \u6761\u4ef6\u5f0f AND / OR / XOR
 //
 void ConditionalExpression():
 {
@@ -1530,6 +1532,29 @@ void ConditionalExpression():
           }
         }
 /*@egen*/                   
+|
+        token = <BOOL_XOR> StringConcatenateExpression()/*@bgen(jjtree) #ConditionalXor( 2) */
+        {
+          ASTConditionalXor jjtn003 = new ASTConditionalXor(this, JJTCONDITIONALXOR);
+          boolean jjtc003 = true;
+          jjtree.openNodeScope(jjtn003);
+        }
+        try {
+/*@egen*//*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn003,  2);
+          jjtc003 = false;
+        }
+/*@egen*/
+        {
+            applyToSymbol( token, jjtn003, TYPE_BOOL, SymbolType.Expression );
+        }/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc003) {
+            jjtree.closeNodeScope(jjtn003,  2);
+          }
+        }
+/*@egen*/                   
     )*
 }
 
@@ -1570,7 +1595,7 @@ void StringConcatenateExpression() :
 }
 
 //
-// \u8ad6\u7406\u7a4d, \u8ad6\u7406\u548c
+// \u8ad6\u7406\u7a4d, \u8ad6\u7406\u548c, \u6392\u4ed6\u7684\u8ad6\u7406\u548c
 //
 void BitwiseExpression() :
 {
@@ -1622,6 +1647,29 @@ void BitwiseExpression() :
         } finally {
           if (jjtc002) {
             jjtree.closeNodeScope(jjtn002,  2);
+          }
+        }
+/*@egen*/               
+|
+        token = <BIT_XOR> EqualityExpression()/*@bgen(jjtree) #BitwiseXor( 2) */
+        {
+          ASTBitwiseXor jjtn003 = new ASTBitwiseXor(this, JJTBITWISEXOR);
+          boolean jjtc003 = true;
+          jjtree.openNodeScope(jjtn003);
+        }
+        try {
+/*@egen*//*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn003,  2);
+          jjtc003 = false;
+        }
+/*@egen*/
+        {
+            applyToSymbol( token, jjtn003, TYPE_INT, SymbolType.Expression );
+        }/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc003) {
+            jjtree.closeNodeScope(jjtn003,  2);
           }
         }
 /*@egen*/               

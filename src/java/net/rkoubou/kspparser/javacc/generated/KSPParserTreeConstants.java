@@ -27,28 +27,30 @@ public interface KSPParserTreeConstants
   public int JJTASSIGNMENT = 21;
   public int JJTCONDITIONALOR = 22;
   public int JJTCONDITIONALAND = 23;
-  public int JJTSTRADD = 24;
-  public int JJTBITWISEOR = 25;
-  public int JJTBITWISEAND = 26;
-  public int JJTEQUAL = 27;
-  public int JJTNOTEQUAL = 28;
-  public int JJTLT = 29;
-  public int JJTGT = 30;
-  public int JJTLE = 31;
-  public int JJTGE = 32;
-  public int JJTADD = 33;
-  public int JJTSUB = 34;
-  public int JJTMUL = 35;
-  public int JJTDIV = 36;
-  public int JJTMOD = 37;
-  public int JJTNEG = 38;
-  public int JJTNOT = 39;
-  public int JJTLOGICALNOT = 40;
-  public int JJTLITERAL = 41;
-  public int JJTREFVARIABLE = 42;
-  public int JJTARRAYINDEX = 43;
-  public int JJTCALLCOMMAND = 44;
-  public int JJTCOMMANDARGUMENTLIST = 45;
+  public int JJTCONDITIONALXOR = 24;
+  public int JJTSTRADD = 25;
+  public int JJTBITWISEOR = 26;
+  public int JJTBITWISEAND = 27;
+  public int JJTBITWISEXOR = 28;
+  public int JJTEQUAL = 29;
+  public int JJTNOTEQUAL = 30;
+  public int JJTLT = 31;
+  public int JJTGT = 32;
+  public int JJTLE = 33;
+  public int JJTGE = 34;
+  public int JJTADD = 35;
+  public int JJTSUB = 36;
+  public int JJTMUL = 37;
+  public int JJTDIV = 38;
+  public int JJTMOD = 39;
+  public int JJTNEG = 40;
+  public int JJTNOT = 41;
+  public int JJTLOGICALNOT = 42;
+  public int JJTLITERAL = 43;
+  public int JJTREFVARIABLE = 44;
+  public int JJTARRAYINDEX = 45;
+  public int JJTCALLCOMMAND = 46;
+  public int JJTCOMMANDARGUMENTLIST = 47;
 
 
   public String[] jjtNodeName = {
@@ -76,9 +78,11 @@ public interface KSPParserTreeConstants
     "Assignment",
     "ConditionalOr",
     "ConditionalAnd",
+    "ConditionalXor",
     "StrAdd",
     "BitwiseOr",
     "BitwiseAnd",
+    "BitwiseXor",
     "Equal",
     "NotEqual",
     "LT",
@@ -100,4 +104,4 @@ public interface KSPParserTreeConstants
     "CommandArgumentList",
   };
 }
-/* JavaCC - OriginalChecksum=3fcb6dd98360e4a6fcb693443c8de4ea (do not edit this line) */
+/* JavaCC - OriginalChecksum=832072c44b070767834768ee937e4925 (do not edit this line) */

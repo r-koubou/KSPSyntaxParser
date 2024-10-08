@@ -624,7 +624,7 @@ public class SemanticAnalyzer extends BasicEvaluationAnalyzerTemplate
             int argT = 0;
 
             // 条件式BOOLはエラー対象
-            if( nid == JJTCONDITIONALOR || nid == JJTCONDITIONALAND )
+            if( nid == JJTCONDITIONALOR || nid == JJTCONDITIONALAND || nid == JJTCONDITIONALXOR )
             {
                 MessageManager.printlnE( MessageManager.PROPERTY_ERROR_SEMANTIC_EXPRESSION_INVALID, n.symbol );
                 AnalyzeErrorCounter.e();
